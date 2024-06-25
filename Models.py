@@ -71,52 +71,6 @@ class DenoiseAutoEncoder_DTG(nn.Module):
         decoded = self.decoder(encoded)
         return decoded
     
-
-class DenoiseAutoEncoder_DDTG(nn.Module):
-    def __init__(self, no_of_filter):
-        super(DenoiseAutoEncoder_DDTG, self).__init__()
-        
-        # Encoder layers
-        self.encoder = nn.Sequential(
-            nn.Conv1d(in_channels=1, out_channels=no_of_filter, kernel_size=8, stride=3, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.Conv1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=7, stride=3, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.Conv1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=5, stride=2, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.Conv1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.Flatten(),
-            nn.Linear(in_features=6250, out_features=50),
-            nn.LeakyReLU()  # LeakyReLU 추가
-        )
-        
-        # Decoder layers
-        self.decoder = nn.Sequential(
-            nn.Linear(in_features=50, out_features=6250),
-            nn.ReLU(),
-            nn.Unflatten(1, (no_of_filter, 125)),  
-            nn.ConvTranspose1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.ConvTranspose1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=5, stride=2, padding=2),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.ConvTranspose1d(in_channels=no_of_filter, out_channels=no_of_filter, kernel_size=7, stride=3, padding=1),
-            nn.BatchNorm1d(no_of_filter),
-            nn.ReLU(),
-            nn.ConvTranspose1d(in_channels=no_of_filter, out_channels=1, kernel_size=8, stride=3, padding=1),
-        )
-        
-    def forward(self, x):
-        encoded = self.encoder(x)
-        decoded = self.decoder(encoded)
-        return decoded
-    
 class CNNModel(nn.Module):
     def __init__(self, NoOfFilter, dropout_prob):
         super(CNNModel, self).__init__()
