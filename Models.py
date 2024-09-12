@@ -46,7 +46,7 @@ class DenoiseAutoEncoder_DTG(nn.Module):
             nn.ReLU(),
             nn.Flatten(),
             nn.Linear(in_features=6250, out_features=50),
-            nn.LeakyReLU()  # LeakyReLU 추가
+            nn.LeakyReLU()  # LeakyReLU
         )
         
         # Decoder layers
@@ -92,7 +92,7 @@ class CNNModel(nn.Module):
         self.dense2 = nn.Linear(200, 20)
         self.relu4 = nn.ReLU()
         self.output = nn.Linear(20, 9)
-        self.dropout = nn.Dropout(p=dropout_prob)  # 드롭아웃 레이어 추가
+        self.dropout = nn.Dropout(p=dropout_prob)  # Dropout layer 
         
     def forward(self, x):
         x = self.conv1(x)
@@ -110,9 +110,9 @@ class CNNModel(nn.Module):
         x = self.flatten(x)
         x = self.dense1(x)
         x = self.relu3(x)
-        x = self.dropout(x)  # 첫 번째 드롭아웃 적용
+        x = self.dropout(x)  # Dropout layer is not used practically (dropout_prob = 0)
         x = self.dense2(x)
         x = self.relu4(x)
-        x = self.dropout(x)  # 두 번째 드롭아웃 적용
+        x = self.dropout(x)  # Dropout layer is not used practically (dropout_prob = 0)
         x = self.output(x)
         return x
